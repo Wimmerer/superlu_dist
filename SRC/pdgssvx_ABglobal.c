@@ -475,6 +475,8 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 		 dLUstruct_t *LUstruct, double *berr,
 		 SuperLUStat_t *stat, int *info)
 {
+	fprintf(stdout, "Entered successfully.\n");
+	fflush(stdout);
     SuperMatrix AC;
     NCformat *Astore;
     NCPformat *ACstore;
@@ -510,7 +512,8 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
     double   dmin, dsum, dprod;
 #endif
 	LUstruct->dt = 'd';
-
+	fprintf(stdout, "L515.\n");
+	fflush(stdout);
     /* Test input parameters. */
     *info = 0;
     Fact = options->Fact;
@@ -537,7 +540,8 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 	pxerr_dist("pdgssvx_ABglobal", grid, -*info);
 	return;
     }
-
+	fprintf(stdout, "L543.\n");
+	fflush(stdout);
     /* Initialization */
     factored = (Fact == FACTORED);
     Equil = (!factored && options->Equil == YES);
@@ -558,15 +562,15 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 	         (ScalePermstruct->DiagScale == BOTH);
     } else rowequ = colequ = FALSE;
 
-#if ( DEBUGlevel>=1 )
     CHECK_MALLOC(iam, "Enter pdgssvx_ABglobal()");
-#endif
 
     perm_r = ScalePermstruct->perm_r;
     perm_c = ScalePermstruct->perm_c;
     etree = LUstruct->etree;
     R = ScalePermstruct->R;
     C = ScalePermstruct->C;
+	fprintf(stdout, "L574.\n");
+	fflush(stdout);
     if ( Equil && Fact != SamePattern_SameRowPerm ) {
 	/* Allocate storage if not done so before. */
 	switch ( ScalePermstruct->DiagScale ) {
