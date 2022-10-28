@@ -561,9 +561,9 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 	colequ = (ScalePermstruct->DiagScale == COL) ||
 	         (ScalePermstruct->DiagScale == BOTH);
     } else rowequ = colequ = FALSE;
-
-    CHECK_MALLOC(iam, "Enter pdgssvx_ABglobal()");
-
+#if ( DEBUGlevel>=1 )
+	CHECK_MALLOC(iam, "Enter pdgssvx_ABglobal()");
+#endif
     perm_r = ScalePermstruct->perm_r;
     perm_c = ScalePermstruct->perm_c;
     etree = LUstruct->etree;
@@ -595,7 +595,8 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 	    default: break;
 	}
     }
-
+	fprintf(stdout, "L598.\n");
+	fflush(stdout);
     /* ------------------------------------------------------------
        Diagonal scaling to equilibrate the matrix.
        ------------------------------------------------------------*/
@@ -632,12 +633,16 @@ pdgssvx_ABglobal(superlu_dist_options_t *options, SuperMatrix *A,
 		}
 	        break;
 	    }
+		fprintf(stdout, "L636.\n");
+		fflush(stdout);
 	} else {
 	    if ( !iam ) {
 		/* Compute row and column scalings to equilibrate matrix A. */
 		dgsequ_dist(A, R, C, &rowcnd, &colcnd, &amax, &iinfo);
 
 		MPI_Bcast( &iinfo, 1, mpi_int_t, 0, grid->comm );
+		fprintf(stdout, "L644.\n");
+		fflush(stdout);
 		if ( iinfo == 0 ) {
 		    MPI_Bcast( R,       m, MPI_DOUBLE, 0, grid->comm );
 		    MPI_Bcast( C,       n, MPI_DOUBLE, 0, grid->comm );
